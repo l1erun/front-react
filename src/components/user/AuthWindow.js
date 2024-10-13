@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import {loginUser, registerUser} from "../../api/user/auth";
-import {getAllCards} from "../../api/user/other";
+import React, { useState, useContext } from 'react';
+import { loginUser, registerUser } from "../../api/user/auth";
+import { getAllCards, getMeUserProfile } from "../../api/user/other";
+import { UserContext } from '../../context/UserContext'; // Импортируем контекст
 
 function AuthWindow({ onLogin }) {
+    const { setUser } = useContext(UserContext); // Используем функцию для обновления контекста пользователя
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -16,8 +19,14 @@ function AuthWindow({ onLogin }) {
             localStorage.setItem('token', 'Bearer ' + response.token);
             localStorage.setItem('refreshToken', response.refreshToken); // Можно хранить в HttpOnly cookie для безопасности
             setIsAuthenticated(true); // Обновляем состояние после успешной авторизации
-            console.log(response.userResponse)
-            onLogin(response.userResponse);
+            const user = response.userResponse;
+            const responseProfile = await getMeUserProfile(user.id);
+
+            // Сохраняем данные о пользователе в контекст
+            setUser(responseProfile); // Обновляем данные пользователя в контексте
+
+            // Вызываем коллбек после логина (если необходимо)
+            onLogin(responseProfile);
         } catch (error) {
             alert("Ошибка при входе");
             console.error("Ошибка при входе", error);
@@ -36,13 +45,12 @@ function AuthWindow({ onLogin }) {
     const handleLogout = () => {
         localStorage.removeItem('token');
         setIsAuthenticated(false); // Обновляем состояние при выходе
-        alert('Пользователь вышел из системы');
+        setUser(null); // Очищаем данные пользователя из контекста при выходе
     };
 
     const handleAction = async () => {
         const data = await getAllCards();
         console.log(data);
-        alert('Вы нажали кнопку "Действие"');
     };
 
     return (

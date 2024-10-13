@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import AuthWindow from "./components/user/AuthWindow";
 import UserProfile from "./components/user/UserProfile";
 import GameSession from "./components/map/GameSession";
 import Home from "./components/Home";  // Стартовое меню (главная страница)
+import { UserProvider } from './context/UserContext';
+import WaitingRoom from "./components/room/WaitingRoom"; // Импортируем UserProvider
+
 
 function App() {
     const [user, setUser] = useState(null);
@@ -27,44 +30,52 @@ function App() {
         setIsAuthenticated(false);
         setInGame(false);
         localStorage.removeItem('token');  // Удаляем токен при разлогине
+        localStorage.removeItem('refreshToken');  // Удаляем токен при разлогине
     };
 
     const handleJoinGame = () => {
-
         console.log(user)
-
         setInGame(true);
     };
-
+    console.log(isAuthenticated);
     return (
-        <Router>
-            <Routes>
-                {/* Стартовое меню */}
-                <Route path="/" element={<Home />} />
+        <UserProvider>
+            <Router>
+                <Routes>
+                    {/* Стартовое меню */}
+                    <Route path="/" element={<Home/>}/>
 
-                {/* Если пользователь не авторизован, перенаправляем его на окно авторизации */}
-                <Route path="/login" element={!isAuthenticated ? (
-                    <AuthWindow onLogin={handleLogin} />
-                ) : (
-                    <Navigate to="/userProfile" />
-                )} />
+                    {/* Если пользователь не авторизован, перенаправляем его на окно авторизации */}
+                    <Route path="/login" element={!isAuthenticated ? (
+                        <AuthWindow onLogin={handleLogin}/>
+                    ) : (
+                        <Navigate to="/userProfile"/>
+                    )}/>
 
-                {/* Профиль пользователя доступен только авторизованным пользователям */}
-                <Route path="/userProfile" element={isAuthenticated ? (
-                    <UserProfile user={user} onLogout={handleLogout} onJoinGame={handleJoinGame} />
-                ) : (
-                    <Navigate to="/login" />
-                )} />
+                    {/* Профиль пользователя доступен только авторизованным пользователям */}
+                    <Route path="/userProfile" element={isAuthenticated ? (
+                        <UserProfile user={user} onLogout={handleLogout} onJoinGame={handleJoinGame}/>
+                    ) : (
+                        <Navigate to="/login"/>
+                    )}/>
 
-                {/* Карта доступна независимо от авторизации */}
-                <Route path="/gameSession" element={
-                    <GameSession />
-                } />
+                    {/* Карта доступна независимо от авторизации */}
+                    <Route path="/gameSession" element={
+                        <GameSession/>
+                    }/>
 
-                {/* Перенаправление на стартовое меню при выходе */}
-                <Route path="/logout" element={<Navigate to="/" />} />
-            </Routes>
-        </Router>
+                    {/* Комната ожидания, доступная после присоединения к игре */}
+                    <Route path="/waiting-room" element={isAuthenticated ? (
+                        <WaitingRoom />
+                    ) : (
+                        <Navigate to="/login" />
+                    )} />
+
+                    {/* Перенаправление на стартовое меню при выходе */}
+                    <Route path="/logout" element={<Navigate to="/"/>}/>
+                </Routes>
+            </Router>
+        </UserProvider>
     );
 }
 
