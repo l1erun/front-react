@@ -1,0 +1,29 @@
+.game-page {
+    display: grid;
+    grid-template-areas:
+    "board board meadow"
+    "forest river cards-area"
+    "player-area player-area player-area";
+    grid-gap: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.game-page > div {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    text-align: center;
+}
+
+button {
+    grid-area: player-area;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #87CEEB;
+    color: white;
+    font-size: 16px;
+}

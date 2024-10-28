@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {BrowserRouter as Router, Route, Routes, Navigate, useNavigate} from 'react-router-dom';
-import AuthWindow from "./components/user/AuthWindow";
-import UserProfile from "./components/user/UserProfile";
-import GameSession from "./components/map/GameSession";
+import AuthWindow from "./userPage/AuthWindow";
+import UserProfile from "./userPage/UserProfile";
+import GameSession from "./mapPage/GameSession";
 import Home from "./components/Home";  // Стартовое меню (главная страница)
 import { UserProvider } from './context/UserContext';
-import WaitingRoom from "./components/room/WaitingRoom"; // Импортируем UserProvider
+import WaitingRoom from "./mapPage/WaitingRoom";
+import GamePage from "./gamePage/GamePage"; // Импортируем UserProvider
 
 
 function App() {
@@ -63,6 +64,8 @@ function App() {
                     <Route path="/gameSession" element={
                         <GameSession/>
                     }/>
+
+                    <Route path="/game" element={<GamePage/>} />
 
                     {/* Комната ожидания, доступная после присоединения к игре */}
                     <Route path="/waiting-room" element={isAuthenticated ? (

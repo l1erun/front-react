@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { loginUser, registerUser } from "../../api/user/auth";
-import { getAllCards, getMeUserProfile } from "../../api/user/other";
-import { UserContext } from '../../context/UserContext'; // Импортируем контекст
+import { loginUser, registerUser } from "./api/auth";
+import { getAllCards, getMeUserProfile } from "./api/other";
+import { UserContext } from '../context/UserContext'; // Импортируем контекст
 
 function AuthWindow({ onLogin }) {
     const { setUser } = useContext(UserContext); // Используем функцию для обновления контекста пользователя

@@ -1,10 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext'; // Импортируем контекст
 
 function WaitingRoom({ isServerReady, playersCount }) {
     const navigate = useNavigate();
-    const { user } = useContext(UserContext); // Используем данные пользователя
 
     const handleLeaveRoom = () => {
         // await

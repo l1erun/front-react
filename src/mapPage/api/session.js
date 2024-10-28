@@ -55,7 +55,32 @@ export const startGameSession = async (session) => {
 
         if (!response.ok) {
             const errorMessage = await response.text(); // Чтение текста ошибки
-            throw new Error(errorMessage || 'Ошибка авторизации');
+            throw new Error(errorMessage || 'Ошибка старта игры');
+        }
+        const data = await response.json(); // Обрабатываем ответ как JSON
+        console.log('Response data:', data); // Логируем ответ
+
+        return data;
+        // return await response.json(); // Если всё прошло успешно, возвращаем JSON с токеном
+    } catch (error) {
+        console.error('Ошибка запроса стратра игры:', error.message);
+        throw error; // Пробрасываем ошибку дальше, чтобы обработать её на уровне UI
+    }
+};
+
+
+export const getSessionById = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:8080/sessions/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text(); // Чтение текста ошибки
+            throw new Error(errorMessage || 'нет сессии');
         }
         const data = await response.json(); // Обрабатываем ответ как JSON
         console.log('Response data:', data); // Логируем ответ

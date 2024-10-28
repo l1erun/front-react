@@ -1,0 +1,6 @@
+.board {
+    grid-area: board;
+    background-image: url('/path-to-your-board-image.jpg');
+    background-size: cover;
+    height: 400px;
+}

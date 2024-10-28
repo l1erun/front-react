@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {creatSession, startGameSession} from "../../api/map/session";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { creatSession, startGameSession } from "./api/session";
 
 function GameSession() {
     const [sessionId, setSessionId] = useState(null);
@@ -9,10 +9,13 @@ function GameSession() {
 
     const startSession = async () => {
         try {
-            const session = await creatSession(); // Логика генерации или получения UUID сессии
-            console.log(session);
-            setSession(session);
-            setSessionId(session.sessionId); // Сохраняем UUID сессии в состоянии
+            const sessionData = await creatSession(); // Получаем данные сессии
+            console.log(sessionData);
+            setSession(sessionData); // Сохраняем всю сессию в состояние
+            setSessionId(sessionData.sessionId); // Сохраняем sessionId
+
+            // Сохраняем sessionId в localStorage после обновления состояния
+            localStorage.setItem('sessionId', sessionData.sessionId);
         } catch (error) {
             console.error("Ошибка при создании сессии", error);
         }
@@ -20,16 +23,21 @@ function GameSession() {
 
     const startGame = async () => {
         try {
-            const data = await startGameSession(session); // Логика генерации или получения UUID сессии
-            console.log(data)
-            // setSessionId(uuid); // Сохраняем UUID сессии в состоянии
+            if (session) {
+                const data = await startGameSession(session); // Передаем всю сессию
+                console.log(data);
+
+                // Переход на страницу GamePage после успешного старта игры
+                navigate('/game');
+            }
         } catch (error) {
-            console.error("Ошибка при создании сессии", error);
+            console.error("Ошибка при запуске игры", error);
         }
     };
 
     const handleExit = () => {
         setSessionId(null);  // Завершаем сессию, сбрасывая sessionId
+        localStorage.removeItem('sessionId'); // Удаляем sessionId из localStorage
         navigate('/');  // Перенаправляем пользователя на стартовую страницу
     };
 
@@ -45,9 +53,7 @@ function GameSession() {
             ) : (
                 <div>
                     <button onClick={startSession}>Запустить сессию</button>
-                    {/*<button onClick={startGame}>Запуск игры</button>*/}
                     <button onClick={handleExit}>Выйти</button>
-                    {/* Кнопка выхода */}
                 </div>
             )}
         </div>

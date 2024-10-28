@@ -47,14 +47,12 @@ export const setGameSession = async (userId, pin) => {
 };
 
 export const getMeUserProfile = async (userId) => {
-    const token = localStorage.getItem('token'); // Получаем токен из localStorage
     try {
         const response = await fetch('http://localhost:8080/players/me/' + userId, {
             method: 'GET',
             headers: {
                 'Authorization': `${localStorage.getItem('token')}`,
             },
-            // body: JSON.stringify(),
         });
 
         if (!response.ok) {

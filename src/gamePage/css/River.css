@@ -1,0 +1,5 @@
+.river {
+    grid-area: river;
+    background-color: #87CEEB;
+    height: 200px;
+}

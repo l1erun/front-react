@@ -1,0 +1,5 @@
+.player-area {
+    grid-area: player-area;
+    background-color: #FFD700;
+    height: 150px;
+}

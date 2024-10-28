@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
-import {setGameSession} from "../../api/user/other"; // Импортируем контекст
+import { UserContext } from '../context/UserContext';
+import {setGameSession} from "./api/other"; // Импортируем контекст
 
 function UserProfile() {
     const navigate = useNavigate();
