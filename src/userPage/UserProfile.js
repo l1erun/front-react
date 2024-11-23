@@ -34,9 +34,11 @@ function UserProfile() {
 
     // Функция для отправки PIN-кода на сервер
     const handlePinSubmit = async () => {
-        await setGameSession(user.id, pinCode)
+        const data = await setGameSession(user, pinCode)
         setShowPinModal(false); // Закрываем модальное окно
-        navigate('/waiting-room'); // Перенаправляем в комнату ожидания
+        console.log(data);
+        navigate(`/waiting-room/${data.sessionId}`); // Перенаправляем в комнату ожидания
+        // navigate(`/waiting-room/`); // Перенаправляем в комнату ожидания
     };
 
     // Функция для закрытия модального окна

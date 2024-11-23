@@ -1,11 +1,27 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useContext, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import useGameWebSocket from "../context/useGameWebSocket";
+import {UserContext} from "../context/UserContext";
 
-function WaitingRoom({ isServerReady, playersCount }) {
+const WaitingRoom = ({ isServerReady, playersCount }) => {
     const navigate = useNavigate();
+    const { sessionId } = useParams();
+    const { user, setUser } = useContext(UserContext);
+
+    const { gameState, connect, disconnect, sendMessage } = useGameWebSocket();
+    console.log(sendMessage)
+    // Устанавливаем соединение при монтировании компонента
+    useEffect(() => {
+        connect(sessionId, user.id);
+        // Разрываем соединение при размонтировании компонента
+        return () => {
+            disconnect();
+        };
+    }, []);
 
     const handleLeaveRoom = () => {
-        // await
+        // Разрываем соединение перед выходом из комнаты
+        disconnect();
         navigate('/userProfile'); // Перенаправляем на страницу профиля
     };
 
@@ -25,8 +41,16 @@ function WaitingRoom({ isServerReady, playersCount }) {
             >
                 {isServerReady && playersCount >= 2 ? 'Войти в игру' : 'Ожидание игроков или сервера'}
             </button>
+            <div>
+                {/* Отображение состояния игры для проверки */}
+                {gameState ? (
+                    <pre>{JSON.stringify(gameState, null, 2)}</pre>
+                ) : (
+                    <p>Ожидание обновлений от сервера...</p>
+                )}
+            </div>
         </div>
     );
-}
+};
 
 export default WaitingRoom;

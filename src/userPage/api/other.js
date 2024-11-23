@@ -22,16 +22,18 @@ export const getAllCards = async () => {
     }
 };
 
-export const setGameSession = async (userId, pin) => {
+export const setGameSession = async (user, pin) => {
     const token = localStorage.getItem('token'); // Получаем токен из localStorage
+    console.log(user)
     try {
-        const response = await fetch('http://localhost:8080/sessions/'+ pin+ '/addUser/' + userId, {
+        // const response = await fetch('http://localhost:8080/sessions/'+ pin+ '/addUser/' + userId, {
+        const response = await fetch(`http://localhost:8080/games/${pin}/join`, {
             method: 'POST',
             headers: {
                 'Authorization': `${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify(user),
         });
 
         if (!response.ok) {

@@ -45,14 +45,13 @@ export const deleteUserInSession = async () => {
 
 export const startGameSession = async (session) => {
     try {
-        const response = await fetch('http://localhost:8080/sessions/start', {
+        // const response = await fetch('http://localhost:8080/sessions/start', {
+        const response = await fetch(`http://localhost:8080/games/${session.sessionId}/start`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(session.sessionId),
         });
-
         if (!response.ok) {
             const errorMessage = await response.text(); // Чтение текста ошибки
             throw new Error(errorMessage || 'Ошибка старта игры');

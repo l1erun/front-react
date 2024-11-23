@@ -65,10 +65,10 @@ function App() {
                         <GameSession/>
                     }/>
 
-                    <Route path="/game" element={<GamePage/>} />
+                    <Route path="/game/:gameId" element={<GamePage />} />
 
                     {/* Комната ожидания, доступная после присоединения к игре */}
-                    <Route path="/waiting-room" element={isAuthenticated ? (
+                    <Route path="/waiting-room/:sessionId" element={isAuthenticated ? (
                         <WaitingRoom />
                     ) : (
                         <Navigate to="/login" />

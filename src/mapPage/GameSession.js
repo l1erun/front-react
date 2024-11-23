@@ -5,15 +5,16 @@ import { creatSession, startGameSession } from "./api/session";
 function GameSession() {
     const [sessionId, setSessionId] = useState(null);
     const [session, setSession] = useState(null);
+    const [sessionPin, setSessionPin] = useState(null);
     const navigate = useNavigate();
+
 
     const startSession = async () => {
         try {
             const sessionData = await creatSession(); // Получаем данные сессии
-            console.log(sessionData);
             setSession(sessionData); // Сохраняем всю сессию в состояние
             setSessionId(sessionData.sessionId); // Сохраняем sessionId
-
+            setSessionPin(sessionData.pin);
             // Сохраняем sessionId в localStorage после обновления состояния
             localStorage.setItem('sessionId', sessionData.sessionId);
         } catch (error) {
@@ -28,7 +29,7 @@ function GameSession() {
                 console.log(data);
 
                 // Переход на страницу GamePage после успешного старта игры
-                navigate('/game');
+                navigate(`/game/${data.sessionId}`);
             }
         } catch (error) {
             console.error("Ошибка при запуске игры", error);
@@ -43,10 +44,10 @@ function GameSession() {
 
     return (
         <div>
-            {sessionId ? (
+            {sessionPin ? (
                 <div>
                     <h2>Сессия запущена</h2>
-                    <p>UUID: {sessionId}</p>
+                    <p>PIN: {sessionPin}</p>
                     <button onClick={startGame}>Старт</button>
                     <button onClick={handleExit}>Завершить сессию</button>
                 </div>
