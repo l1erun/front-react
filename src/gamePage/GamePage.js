@@ -11,42 +11,40 @@ import useGameWebSocket from "../context/useGameWebSocket";
 
 const GamePage = () => {
     const { gameId } = useParams();
-    const playerId = null; // Используйте реальные значения
-    console.log(gameId)
     const { gameState, connect, disconnect, sendMessage } = useGameWebSocket();
-
+    console.log(gameState)
     useEffect(() => {
         // Устанавливаем соединение при монтировании компонента
-        connect(gameId, playerId);
+        connect(gameId, null, "map");
 
         // Отключаемся при размонтировании компонента
         return () => {
             disconnect();
         };
-    }, []);
+    }, [connect, gameId]);
 
     return (
         <div className="game-page">
             {/* Основное игровое поле */}
-            <Board />
+            <Board/>
 
             {/* Луг */}
-            <Meadow />
+            <Meadow/>
 
             {/* Лесная локация */}
-            <Forest />
+            <Forest/>
 
             {/* Локация реки */}
-            <River />
+            <River/>
 
             {/* Область карт */}
-            <CardsArea />
+            <CardsArea/>
 
             {/* Дополнительный компонент */}
-            <PlayerArea />
+            <PlayerArea/>
 
             {/* Кнопка для отправки сообщения через WebSocket */}
-            <button onClick={() => sendMessage('/app/someDestination', { action: 'test' })}>
+            <button onClick={() => sendMessage(`/app/${gameId}/action2`, {action: 'test'})}>
                 Отправить сообщение
             </button>
         </div>
