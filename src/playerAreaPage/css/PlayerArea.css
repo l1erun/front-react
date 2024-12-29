@@ -1,5 +1,21 @@
-.player-area {
-    grid-area: player-area;
-    background-color: #FFD700;
-    height: 150px;
+.player-resources {
+    margin-bottom: 20px;
+}
+
+.resource-row {
+    display: flex; /* Горизонтальное расположение */
+    flex-wrap: wrap; /* Для корректного отображения при малой ширине экрана */
+    gap: 15px; /* Расстояние между элементами */
+    align-items: center; /* Выравнивание по центру */
+}
+
+.resource {
+    display: flex; /* Выравнивание внутри ресурса */
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.resource-icon {
+    margin-right: 8px; /* Отступ между иконкой и числом */
 }

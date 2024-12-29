@@ -1,0 +1,12 @@
+.locations-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 3 колонки */
+    gap: 15px;
+}
+
+.location-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}

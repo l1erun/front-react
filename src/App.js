@@ -6,7 +6,8 @@ import GameSession from "./mapPage/GameSession";
 import Home from "./components/Home";  // Стартовое меню (главная страница)
 import { UserProvider } from './context/UserContext';
 import WaitingRoom from "./mapPage/WaitingRoom";
-import GamePage from "./gamePage/GamePage"; // Импортируем UserProvider
+import GamePage from "./gamePage/GamePage";
+import PlayerArea from "./playerAreaPage/PlayerArea"; // Импортируем UserProvider
 
 
 function App() {
@@ -66,9 +67,9 @@ function App() {
                     }/>
 
                     <Route path="/game/:gameId" element={<GamePage />} />
-
+                    <Route path="/playerArea/:gameId/:playerId" element={<PlayerArea />} />
                     {/* Комната ожидания, доступная после присоединения к игре */}
-                    <Route path="/waiting-room/:sessionId" element={isAuthenticated ? (
+                    <Route path="/waiting-room/:gameId" element={isAuthenticated ? (
                         <WaitingRoom />
                     ) : (
                         <Navigate to="/login" />

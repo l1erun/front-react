@@ -5,30 +5,38 @@ import {UserContext} from "../context/UserContext";
 
 const WaitingRoom = ({ isServerReady, playersCount }) => {
     const navigate = useNavigate();
-    const { sessionId } = useParams();
+    const { gameId } = useParams();
     const { user, setUser } = useContext(UserContext);
 
     const { gameState, connect, disconnect, sendMessage } = useGameWebSocket();
-    console.log(sendMessage)
+
     // Устанавливаем соединение при монтировании компонента
     useEffect(() => {
-        connect(sessionId, user.id, "user");
+        connect(gameId, user.id, "user");
         // Разрываем соединение при размонтировании компонента
         return () => {
             disconnect();
         };
     }, []);
 
+    useEffect(() => {
+        console.log(gameState);
+        if (gameState != null && gameState.message === "start") { // Условие для перехода
+            navigate(`/playerArea/${gameId}/${user.id}`); // Переход на страницу игры
+        }
+    }, [gameState]);
+
     const handleLeaveRoom = () => {
         // Разрываем соединение перед выходом из комнаты
         disconnect();
         navigate('/userProfile'); // Перенаправляем на страницу профиля
     };
-
+    console.log(gameId);
     return (
         <div>
             <h2>Вы находитесь в комнате ожидания</h2>
             <button onClick={handleLeaveRoom}>Выйти из комнаты</button>
+            {/*<button onClick={() => sendMessage(`/app/${gameId}/action2`, {action: 'test'})}>Выйти из комнаты</button>*/}
 
             <button
                 disabled={!isServerReady || playersCount < 2}
@@ -39,7 +47,7 @@ const WaitingRoom = ({ isServerReady, playersCount }) => {
                     marginTop: '20px'
                 }}
             >
-                {isServerReady && playersCount >= 2 ? 'Войти в игру' : 'Ожидание игроков или сервера'}
+                {isServerReady ? 'Войти в игру' : 'Ожидание игроков или сервера'}
             </button>
             <div>
                 {/* Отображение состояния игры для проверки */}

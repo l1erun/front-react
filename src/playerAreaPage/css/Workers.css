@@ -1,0 +1,18 @@
+.workers {
+    margin-bottom: 20px;
+}
+
+.workers-info {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    gap: 10px;
+}
+
+.workers-count {
+    font-weight: bold;
+}
+
+.worker-icon {
+    font-size: 24px;
+}

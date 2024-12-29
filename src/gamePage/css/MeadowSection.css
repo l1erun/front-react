@@ -1,0 +1,31 @@
+.meadow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки равного размера */
+    gap: 10px; /* Расстояние между картами */
+    width: 100%; /* Растянуть на всю ширину окна */
+    margin: 0 auto;
+}
+
+.meadow-slot {
+    width: 100%; /* Растянуть элемент внутри сетки */
+    aspect-ratio: 2 / 3; /* Соотношение сторон (2:3) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+    border: 1px dashed #ccc;
+    overflow: hidden; /* Обрезка изображения */
+    border-radius: 5px;
+}
+
+.meadow-slot img {
+    width: 100%; /* Растянуть изображение */
+    height: 100%; /* Сохранить пропорции */
+    object-fit: cover; /* Центрирование и обрезка изображения */
+}
+
+.empty-slot {
+    width: 100%;
+    height: 100%;
+    background-color: #eaeaea;
+}

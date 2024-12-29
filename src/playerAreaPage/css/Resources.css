@@ -1,0 +1,20 @@
+.resources {
+    margin-bottom: 20px;
+}
+
+.resources-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.resource {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.resource-icon {
+    margin-right: 8px;
+}
