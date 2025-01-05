@@ -39,7 +39,7 @@ const useGameWebSocket = () => {
                     setGameState(parsedMessage);
                 });
 
-                sendMessage(`/app/${gameId}/action`, { playerId, actionType: 'connect' });
+                sendMessage(`/app/${gameId}/connection`, { playerId, actionType: 'connect' });
             },
             onDisconnect: () => {
                 console.log('WebSocket отключен');

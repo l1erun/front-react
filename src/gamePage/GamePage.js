@@ -6,6 +6,7 @@ import MeadowSection from "./component/MeadowSection";
 import DeckSection from "./component/DeckSection";
 import DiscardPileSection from "./component/DiscardPileSection";
 import BaseLocations from "./component/BaseLocations";
+import ForestLocations from "./component/ForestLocations";
 
 const GamePage = () => {
     const { gameId } = useParams();
@@ -77,7 +78,8 @@ const GamePage = () => {
             {/*<h2>Текущий ход: {gameState.currentTurn}</h2>*/}
             <EventsSection events={gameState.events} />
             <MeadowSection meadowCards={gameState.meadowCard} />
-            <BaseLocations locations={gameState.locations} />
+            <BaseLocations locations={gameState.baseLocations} />
+            <ForestLocations locations={gameState.forestLocations} />
             <DeckSection deck={gameState.deck} />
             <DiscardPileSection discardPile={gameState.discardPile} />
         </div>

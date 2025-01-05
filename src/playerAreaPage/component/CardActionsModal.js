@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/CardActionsModal.css";
 
 const CardActionsModal = ({ card, onAction, onClose, onView }) => {
     return (

@@ -1,0 +1,43 @@
+.meadow-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.meadow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+.meadow-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 90%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.meadow-card-item {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.meadow-card-item:hover {
+    transform: scale(1.05);
+}
+
+.meadow-card-item img {
+    max-width: 100%;
+    border-radius: 4px;
+}

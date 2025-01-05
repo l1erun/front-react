@@ -12,6 +12,7 @@ const WaitingRoom = ({ isServerReady, playersCount }) => {
 
     // Устанавливаем соединение при монтировании компонента
     useEffect(() => {
+        console.log("!!!!")
         connect(gameId, user.id, "user");
         // Разрываем соединение при размонтировании компонента
         return () => {
