@@ -1,0 +1,104 @@
+/* Общие стили модального окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* На передний план */
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 80%;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.modal-content h4 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Сетка для карточек */
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Сетка: 4 элемента в ряд */
+    gap: 15px; /* Расстояние между карточками */
+}
+
+/* Стили для карточек */
+.location-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.location-card:hover {
+    transform: scale(1.02); /* Увеличение при наведении */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень при наведении */
+}
+
+.location-card h4 {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+}
+
+.location-card p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+/* Награды в карточке */
+.rewards {
+    margin-top: 5px;
+    padding-left: 15px;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .modal-content ul {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Меньше карточек в ряд */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal-content h3 {
+        font-size: 1.3rem;
+    }
+
+    .location-card h4 {
+        font-size: 1rem;
+    }
+
+    .location-card p {
+        font-size: 0.8rem;
+    }
+}

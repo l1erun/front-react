@@ -1,20 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import React, {useContext, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {UserContext} from "../context/UserContext";
 import useGameWebSocket from "../context/useGameWebSocket";
 import CardTable from "./component/CardTable";
 import Resources from "./component/Resources";
 import Workers from "./component/Workers";
 import CardActionsModal from "./component/CardActionsModal";
 import CardViewModal from "./component/CardViewModal";
-import {fetchCheckFreeBuild, fetchMeadowCards} from "./api/PlayerAreaApi";
+import {fetchCheckFreeBuild, fetchCheckSetWorkerSlots, fetchMeadowCards} from "./api/PlayerAreaApi";
 import MeadowCardsModal from "./component/MeadowCardsModal";
 import CardActionOptionsModal from "./component/CardActionOptionsModal";
+import LocationSelectionModal from "./component/LocationSelectionModal";
+import LocationDetailsModal from "./component/LocationDetailsModal";
 
 const PlayerArea = () => {
-    const { gameId, playerId } = useParams();
-    const { user } = useContext(UserContext);
-    const { gameState, isConnected, connect, disconnect, sendMessage, error } = useGameWebSocket();
+    const {gameId, playerId} = useParams();
+    const {user} = useContext(UserContext);
+    const {gameState, isConnected, connect, disconnect, sendMessage, error} = useGameWebSocket();
 
     const [actionCard, setActionCard] = useState(null); // Карта для действий
     const [viewedCard, setViewedCard] = useState(null); // Карта для просмотра
@@ -25,6 +27,14 @@ const PlayerArea = () => {
     const [cardOptions, setCardOptions] = useState([]); // Карты для CardActionOptionsModal
     const [isOptionsModalOpen, setOptionsModalOpen] = useState(false); // Состояние модального окна
     const [selectedCard, setSelectedCard] = useState(null);
+    const [isLocationModalOpen, setLocationModalOpen] = useState(false); // Состояние модального окна
+    const [locationsData, setLocationsData] = useState({
+        baseLocation: [],
+        forestLocation: [],
+        userLocation: {}
+    });
+    const [selectedLocation, setSelectedLocation] = useState(null); // Локация для второго модального окна
+    const [isSecondModalOpen, setSecondModalOpen] = useState(false); // Состояние второго модального окна
 
 
     // Установление соединения при монтировании
@@ -131,9 +141,24 @@ const PlayerArea = () => {
 
 
     const handleCloseView = () => setViewedCard(null);
-    const handleSendWorker = () => sendMessage(`/app/${gameId}/${playerId}/sendWorker`);
     const handleEndTurn = () => sendMessage(`/app/${gameId}/${playerId}/endTurn`);
     const handleGoToSeason = () => sendMessage(`/app/${gameId}/${playerId}/goToSeason`);
+
+    const handleSendWorker = async () => {
+        const data = await fetchCheckSetWorkerSlots(gameId, playerId);
+        console.log(data);
+        setLocationsData({
+            baseLocation: data.baseLocation || [],
+            forestLocation: data.forestLocation || [],
+            userLocation: data.userLocation || {}
+        });
+        setLocationModalOpen(true); // Открываем модальное окно
+    };
+
+    const handleLocationClick = (location) => {
+        setSelectedLocation(location);
+        setSecondModalOpen(true);
+    };
 
     // Отображение загрузки или контента
     if (loading) {
@@ -152,8 +177,8 @@ const PlayerArea = () => {
 
     return (
         <div className="player-area">
-            <Resources resources={resources} />
-            <Workers workers={workers} />
+            <Resources resources={resources}/>
+            <Workers workers={workers}/>
 
             <CardTable
                 title="Карты на руке"
@@ -177,7 +202,7 @@ const PlayerArea = () => {
             </div>
 
             {viewedCard && (
-                <CardViewModal card={viewedCard} onClose={handleCloseView} />
+                <CardViewModal card={viewedCard} onClose={handleCloseView}/>
             )}
 
             {actionCard && (
@@ -204,6 +229,27 @@ const PlayerArea = () => {
                     onBuildFree={handleBuildFree}
                     onBuildWithResources={handleBuildWithResources}
                     onClose={handleCloseOptionsModal}
+                />
+            )}
+
+            {isLocationModalOpen && (
+                <LocationSelectionModal
+                    baseLocation={locationsData.baseLocation}
+                    forestLocation={locationsData.forestLocation}
+                    userLocation={locationsData.userLocation}
+                    onLocationClick={handleLocationClick}
+                    onClose={() => setLocationModalOpen(false)}
+                />
+            )}
+
+            {isSecondModalOpen && (
+                <LocationDetailsModal
+                    location={selectedLocation}
+                    onSendWorker={() => {
+                        sendMessage(`/app/${gameId}/${playerId}/${selectedLocation.id}/sendWorkerToLocation`);
+                        setSecondModalOpen(false); // Закрываем второе модальное окно
+                    }}
+                    onClose={() => setSecondModalOpen(false)} // Закрываем второе модальное окно
                 />
             )}
         </div>
